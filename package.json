@@ -1,0 +1,15 @@
+{
+  "name": "jeanneactu",
+  "version": "1.0.0",
+  "description": "le site web du club journal du lycée jeanne d'albret",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "eleves du club journal",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
+

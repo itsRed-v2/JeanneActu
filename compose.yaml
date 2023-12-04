@@ -1,0 +1,12 @@
+services:
+  backend:
+    build: "."
+    ports:
+      - 3000:3000
+    volumes:
+      - ./src:/code/src:ro
+      - ./package.json:/code/package.json
+      - ./package-lock.json:/code/package-lock.json
+      - back-notused:/opt/app/node_modules
+volumes:
+  back-notused:
