@@ -1,12 +1,31 @@
 services:
+  traefik:
+    # The official v2 Traefik docker image
+    image: traefik:v2.10
+    ports:
+      # The HTTP port
+      - "1080:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /run/user/1001/docker.sock:/var/run/docker.sock
+      # The traefik configuration file
+      - ./traefik.yml:/etc/traefik/traefik.yml
+    networks:
+      - backend
   backend:
     build: "."
-    ports:
-      - 3000:3000
     volumes:
       - ./src:/code/src:ro
       - ./package.json:/code/package.json
       - ./package-lock.json:/code/package-lock.json
       - back-notused:/opt/app/node_modules
+    labels:
+      - "traefik.http.routers.jeanne-router.rule=Host(`jeanneactu.xenocraft.fr`)"
+    networks:
+      - backend
 volumes:
   back-notused:
+networks:
+  backend:
