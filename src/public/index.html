@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="robots" content="noindex,nofollow">
-	<title>My lil' app</title>
+	<title>Jeanne Actu - Home</title>
 
 	<link rel="stylesheet" href="style.css">
 </head>
@@ -12,32 +12,54 @@
 	<header>
 		<h1>Jeanne Actu</h1>
 		<nav>
-			<a href="" class="selected">Home</a>
-			<a href="">Qui sommes nous ?</a>
-			<a href="">Archive</a>
-			<a href="">Vidéos actus</a>
+			<a class="selected">Home</a>
+			<a>Qui sommes nous ?</a>
+			<a>Archive</a>
+			<a>Vidéos actus</a>
 		</nav>
 	</header>
 	<main>
-		<h1>C'est quoi Jeanne Actu ?</h1>
-		<p class="info">
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sit amet est placerat in egestas erat. Ullamcorper eget nulla facilisi etiam dignissim diam quis enim.
-		</p>
-		<h1>Nos dernières sorties:</h1>
-		<div class="numero-container">
-			<h2 class="numero-title">Titre du dernier numéro</h2>
-			<div class="numero-container-bottom">
-				<div class="numero-info">
-					<span>06/12/2023</span>
-					<span>n°5</span>
+		<div class="content">
+			<h1>C'est quoi Jeanne Actu ?</h1>
+			<p class="info">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sit amet est placerat in egestas erat. Ullamcorper eget nulla facilisi etiam dignissim diam quis enim.
+			</p>
+			<h1>Nos dernières sorties:</h1>
+			<div class="sorties">
+				<div class="numero-container">
+					<h2 class="numero-title">Matrices et graphes</h2>
+					<div class="numero-container-bottom">
+						<div class="numero-info">
+							<img src="images/journal.png" alt="icone journal">
+							<span>n°5</span>
+							<span>06/12/2023</span>
+						</div>
+						<a href="numeros/matrices et graphes.pdf" target="_blank" class="see-button">
+							<img src="images/oeil.png" alt="eye icon">
+							<span>Afficher</span>
+						</a>
+					</div>
 				</div>
-				<a href="pdf/matrices et graphes.pdf" target="_blank" class="download-numero-button">
-					<img src="images/download.svg" alt="download icon">
-					<span>Télécharger</span>
-				</a>
+				<div class="numero-container">
+					<h2 class="numero-title">Fusion de blocs dans minecraft</h2>
+					<div class="numero-container-bottom">
+						<div class="numero-info">
+							<img src="images/clap.png" alt="icone vidéo">
+							<span>n°0</span>
+							<span>11/12/2023</span>
+						</div>
+						<a href="videos/block merging.mp4" target="_blank" class="see-button">
+							<img src="images/jouer.png" alt="play icon">
+							<span>Visionner</span>
+						</a>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="video-container"></div>
+		<div class="aside">
+			<img class="photo-patron" src="images/eliott2.png" alt="photo de notre très cher patron">
+			<span>Notre patron adoré</span>
+		</div>
 	</main>
 </body>
 </html>

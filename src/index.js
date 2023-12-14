@@ -5,7 +5,11 @@ const app = express();
 const port = 80;
 
 app.get('/', (req, res) => {
-	res.send("Hey ! Maybe try to see what's at /index.html ...");
+	res.redirect('/home');
+});
+
+app.get('/home', (req, res) => {
+	res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
