@@ -1,8 +1,13 @@
 :root {
-	--green: #309C6D;
-	--light-green: #309C6D7F;
-	--light: #EDFDEE;
+	--main: #0a4ea8;
+	--main-transparent: #0a4ea880;
+	--light: #f7f7f7;
 	--dark: #122D40;
+
+	--gradient-opacity: 0.7;
+
+	--gradient: linear-gradient(135deg, rgba(10,78,168,1) 0%, rgba(212,60,255,1) 100%);
+	--gradient-transparent: linear-gradient(135deg, rgba(52,74,186, var(--gradient-opacity)) 0%, rgba(153,65,230, var(--gradient-opacity)) 100%);
 }
 
 body {
@@ -16,7 +21,7 @@ body {
 }
 
 header {
-	background-color: var(--green);
+	background: var(--gradient);
 	color: white;
 
 	display: flex;
@@ -52,7 +57,7 @@ nav a {
 
 nav a.selected {
 	background: var(--light);
-	color: var(--green);
+	color: var(--main);
 }
 
 nav a::after {
@@ -144,7 +149,7 @@ main {
 
 	border: none;
 	border-radius: 10px;
-	background-color: #50ce6d7f;
+	background: var(--gradient-transparent);
 	transition: 0.2s;
 
 	text-decoration: none;
