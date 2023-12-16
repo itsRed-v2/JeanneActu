@@ -4,7 +4,7 @@
 	--light: #f7f7f7;
 	--dark: #122D40;
 
-	--gradient-opacity: 0.7;
+	--gradient-opacity: 0.6;
 
 	--gradient: linear-gradient(135deg, rgba(10,78,168,1) 0%, rgba(212,60,255,1) 100%);
 	--gradient-transparent: linear-gradient(135deg, rgba(52,74,186, var(--gradient-opacity)) 0%, rgba(153,65,230, var(--gradient-opacity)) 100%);
@@ -191,4 +191,10 @@ main {
 	.sorties {
 		width: 100%;
 	}
+}
+
+.invisible-link {
+	color: inherit;
+	text-decoration: inherit;
+	cursor: inherit;
 }
