@@ -6,8 +6,8 @@
 
 	--gradient-opacity: 0.6;
 
-	--gradient: linear-gradient(135deg, rgba(10,78,168,1) 0%, rgba(212,60,255,1) 100%);
-	--gradient-transparent: linear-gradient(135deg, rgba(52,74,186, var(--gradient-opacity)) 0%, rgba(153,65,230, var(--gradient-opacity)) 100%);
+	--gradient: linear-gradient(135deg, #04F, #0CF);
+	--gradient-transparent: linear-gradient(135deg, rgba(0, 68, 255, var(--gradient-opacity)), rgba(0, 204, 255, var(--gradient-opacity)));
 }
 
 body {
@@ -29,11 +29,10 @@ header {
 	align-items: center;
 }
 
-header h1 {
+.logo {
 	padding: 20px;
 	margin: 0;
-	font-size: 250%;
-	color: var(--light);
+	height: 4rem;
 }
 
 nav {
@@ -87,6 +86,8 @@ main {
 
 .content {
 	padding: 20px;
+	max-width: 100%;
+	box-sizing: border-box;
 	align-self: center;
 }
 
@@ -116,6 +117,13 @@ main {
 	gap: 20px
 }
 
+.miniature {
+	width: 20rem;
+	max-width: 100%;
+	margin-top: 10px;
+	border-radius: 10px;
+}
+
 .numero-info {
 	display: flex;
 	align-items: center;
@@ -133,11 +141,6 @@ main {
 }
 
 .numero-title {
-	margin: 0;
-}
-
-.numero-title img {
-	height: 2rem;
 	margin: 0;
 }
 
@@ -168,26 +171,7 @@ main {
 	height: 1.1rem;
 }
 
-.aside {
-	padding: 20px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-.photo-patron {
-	width: 100px;
-	margin: 10px;
-	border-radius: 10px;
-	box-shadow: 0 0 10px #0008;
-    transform: rotate(-5deg);
-}
-
 @media (max-width: 800px) {
-	.aside {
-		display: none;
-	}
-
 	.sorties {
 		width: 100%;
 	}
