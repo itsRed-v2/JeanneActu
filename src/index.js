@@ -1,5 +1,5 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import url from 'url';
 
 const app = express();
 const port = 3000;
@@ -9,15 +9,32 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-	res.sendFile(path.join(__dirname, 'public/index.html'));
+	res.sendFile(resourcePath('public/index.html'));
 });
 
 app.get('/lepatron', (req, res) => {
-	res.sendFile(path.join(__dirname, 'public/lepatron.html'));
+	res.sendFile(resourcePath('public/lepatron.html'));
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(resourcePath('public')));
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`);
 });
+
+// Shutdown handling
+process.on('SIGTERM', () => {
+	console.log('SIGTERM signal received: closing HTTP server');
+	server.close(() => {
+		console.log("HTTP server closed");
+	});
+});
+
+/**
+ * Gets the absolute path for a resource relative to this file.
+ * @param {string} path path relative to index.js
+ * @returns {string} the absolute path
+ */
+function resourcePath(path) {
+	return url.fileURLToPath(new URL(path, import.meta.url));
+}

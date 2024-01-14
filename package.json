@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "le site web du club journal du lycée jeanne d'albret",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
