@@ -7,7 +7,7 @@ WORKDIR /code
 
 ARG PORT=3000
 ENV PORT $PORT
-EXPOSE $PORT 9229 9230
+EXPOSE $PORT
 
 COPY package.json /code/package.json
 COPY package-lock.json /code/package-lock.json
