@@ -98,7 +98,8 @@ main {
 .sorties {
 	width: fit-content;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
+	align-items: start;
 	gap: 20px
 }
 
@@ -157,6 +158,8 @@ main {
 
 	text-decoration: none;
 	color: black;
+	/* color: white;
+	font-weight: bold; */
 }
 
 .see-button:hover {
@@ -168,7 +171,8 @@ main {
 }
 
 .see-button img {
-	height: 1.1rem;
+	max-height: 1.1rem;
+	max-width: 1.1rem;
 }
 
 @media (max-width: 800px) {
