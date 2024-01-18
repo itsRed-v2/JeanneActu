@@ -66,6 +66,11 @@ class DB {
 	async end(callback) {
 		this.connection.end(callback);
 	}
+
+	async getVideo(id) {
+		const result = await this.query(`SELECT * FROM Video WHERE Video_id = ${id};`);
+		return result;
+	}
 }
 
 export {

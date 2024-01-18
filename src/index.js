@@ -26,14 +26,20 @@ app.get('/lepatron', (req, res) => {
 
 app.use(express.static(resourcePath('public')));
 
-app.get('/db', (req, res) => {
-	if (!db.connected) {
-		res.status(503);
-		res.send("503 Service Unavailable");
+app.get('/video/:id', ensureDBconnected, async (req, res) => {
+	const videoID = req.params.id;
+	if (!videoID.match(/\d+/)) {
+		send404(req, res);
 		return;
 	}
 
-	db.query("SELECT * FROM Video").then(result => res.send(result));
+	const video = await db.getVideo(parseInt(videoID));
+	if (video.length == 0) {
+		send404(req, res);
+		return;
+	}
+
+	res.send(video[0]);
 });
 
 const server = app.listen(port, () => {
@@ -58,4 +64,18 @@ process.on('SIGTERM', () => {
  */
 function resourcePath(path) {
 	return url.fileURLToPath(new URL(path, import.meta.url));
+}
+
+function ensureDBconnected(req, res, next) {
+	if (db.connected) {
+		next()
+	} else {
+		res.status(503);
+		res.send("503 Service Unavailable");
+	}
+}
+
+function send404(req, res) {
+	res.status(404);
+	res.send("404 Not Found");
 }
