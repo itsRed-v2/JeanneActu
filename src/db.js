@@ -1,75 +1,62 @@
-import mysql from 'mysql';
+import mysql from 'mysql2/promise';
 
 class DB {
-	constructor(config) {
-		this.config = config;
+	constructor({ host, user, password, database }) {
+		this.config = { host, user, password, database };
 		this.connected = false;
 		this.connectAttempts(10);
 	}
 
 	async connectAttempts(maxAttempts) {
-		return new Promise((resolve, reject) => {
-			let attempts = 0;
+		for (let attempt = 0; attempt < maxAttempts; attempt++) {
+			try {
+				await this.connect();
+				return;
+			} catch (err) {
+				if (err.code = "ECONNREFUSED") {
+					console.log(`Failed to connect to database (attempt ${attempt + 1}). Retrying in 1s.`);
+					await new Promise(res => setTimeout(res, 1000));
+				} else {
+					throw err;
+				}
+			}
+		}
 
-			const id = setInterval(() => {
-				this.connect()
-					.then((res) => {
-						clearInterval(id);
-						this.connected = true
-						resolve(res);
-					})
-					.catch((reason) => {
-						attempts++;
-						if (attempts >= maxAttempts) {
-							clearInterval(id);
-							console.log(`Error: failed to connect to database after ${attempts} attempts.`);
-							reject(reason);
-						} else {
-							console.log(`Failed to connect to database (attempt ${attempts}). Retrying in 1s.`);
-						}
-					});
-			}, 1000);
-		});
+		console.log(`Error: failed to connect to database after ${maxAttempts} attempts.`);
 	}
 
 	async connect() {
-		return new Promise((resolve, reject) => {
-			this.connection = mysql.createConnection(this.config);
-			this.connection.connect(err => {
-				if (err) reject(err);
-				else {
-					this.connection.on('error', err => {
-						this.connected = false;
-						if (err.code === "PROTOCOL_CONNECTION_LOST") {
-							console.log("Database connection lost, reconnecting...");
-							this.connectAttempts(10);
-						} else {
-							throw err;
-						}
-					});
-					console.log("Database connected.");
-					resolve();
-				}
-			});
-		});
+		this.connection = await mysql.createConnection(this.config);
+		this.connected = true;
+		console.log("Database connected.");
+
+		this.connection.on('error', err => {
+			this.connected = false;
+			if (err.code === "PROTOCOL_CONNECTION_LOST") {
+				console.log("Database connection lost, reconnecting...");
+				this.connectAttempts(10);
+			} else {
+				throw err;
+			}
+		})
 	}
 
-	async query(sql) {
-		return new Promise((resolve, reject) => {
-			this.connection.query(sql, (err, result) => {
-				if (err) reject(err);
-				else resolve(result);
-			});
-		});
+	async execute(sql, values) {
+		try {
+			const [results, _fields] = await this.connection.execute(sql, values);
+			return results;
+		} catch (err) {
+			throw err;
+		}
 	}
 
-	async end(callback) {
-		this.connection.end(callback);
+	async close() {
+		await this.connection?.end();
 	}
 
 	async getVideo(id) {
-		const result = await this.query(`SELECT * FROM Video WHERE Video_id = ${id};`);
-		return result;
+		const result = await this.execute(`SELECT * FROM Video WHERE Video_id = ?;`, [id]);
+		return result[0];
 	}
 }
 

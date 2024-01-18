@@ -28,18 +28,13 @@ app.use(express.static(resourcePath('public')));
 
 app.get('/video/:id', ensureDBconnected, async (req, res) => {
 	const videoID = req.params.id;
-	if (!videoID.match(/\d+/)) {
+	const video = await db.getVideo(videoID);
+	if (!video) {
 		send404(req, res);
 		return;
 	}
 
-	const video = await db.getVideo(parseInt(videoID));
-	if (video.length == 0) {
-		send404(req, res);
-		return;
-	}
-
-	res.send(video[0]);
+	res.send(video);
 });
 
 const server = app.listen(port, () => {
@@ -52,7 +47,7 @@ process.on('SIGTERM', () => {
 	server.close(() => {
 		console.log("HTTP server closed");
 	});
-	db.end(err => {
+	db.close().then(() => {
 		console.log("Database connection closed");
 	});
 });
