@@ -100,7 +100,8 @@ main {
 	display: flex;
 	flex-direction: row;
 	align-items: start;
-	gap: 20px
+	gap: 20px;
+	flex-wrap: wrap;
 }
 
 .numero-container {
