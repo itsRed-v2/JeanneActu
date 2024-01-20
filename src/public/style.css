@@ -77,6 +77,8 @@ nav a:not(.selected):hover::after {
 
 h1 {
 	color: var(--dark);
+	font-size: xx-large;
+	margin: 1rem 0;
 }
 
 main {
@@ -92,7 +94,7 @@ main {
 }
 
 .info {
-	max-width: 30rem;
+	max-width: 55rem;
 }
 
 .sorties {
@@ -115,8 +117,8 @@ main {
 	margin-top: 10px;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	gap: 20px
+	flex-wrap: wrap;
+	gap: 5px;
 }
 
 .miniature {
@@ -147,6 +149,8 @@ main {
 }
 
 .see-button {
+	margin-left: auto;
+
 	display: flex;
 	align-items: center;
 	padding: 8px;
@@ -174,12 +178,6 @@ main {
 .see-button img {
 	max-height: 1.1rem;
 	max-width: 1.1rem;
-}
-
-@media (max-width: 800px) {
-	.sorties {
-		width: 100%;
-	}
 }
 
 .invisible-link {
