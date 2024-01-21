@@ -26,18 +26,20 @@ app.get('/lepatron', (req, res) => {
 	res.sendFile(resourcePath('public/lepatron.html'));
 });
 
-app.get('/video/:id', async (req, res) => {
+app.get('/video/:id', async (req, res, next) => {
 	const videoID = req.params.id;
 	const video = await db.getVideo(videoID);
 	if (!video) {
-		send404(req, res);
+		next();
 		return;
 	}
 
-	res.sendFile(storagePath(video.Fichier))
+	res.sendFile(storagePath(video.Fichier));
 });
 
 app.use(express.static(resourcePath('public')));
+
+app.use('/', send404);
 
 // Opening the express server
 const server = app.listen(PORT, () => {
@@ -47,6 +49,11 @@ const server = app.listen(PORT, () => {
 // Shutdown handling
 process.on('SIGTERM', () => {
 	console.log('SIGTERM signal received: closing HTTP server');
+
+	// Ensuring no connection prevents the server from exiting (eg. video streaming)
+	server.closeAllConnections();
+
+	// Closing http server and db connection
 	server.close(() => {
 		console.log("HTTP server closed");
 	});
@@ -86,7 +93,6 @@ async function ensureDBconnected(req, res, next) {
 	}
 }
 
-function send404(req, res) {
-	res.status(404);
-	res.send("404 Not Found");
+function send404(req, res, next) {
+	res.status(404).send("404 Not Found");
 }

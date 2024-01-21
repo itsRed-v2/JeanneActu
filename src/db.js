@@ -30,8 +30,10 @@ class DB {
 		this.connected = true;
 		console.log("Database connected.");
 
-		this.connection.on('error', err => {
+		this.connection.on('error', async err => {
+			await this.connection.close();
 			this.connected = false;
+			
 			if (err.code === "PROTOCOL_CONNECTION_LOST") {
 				this.#handleProtocolConnectionLost();
 			} else if (err.code === 4031) {
