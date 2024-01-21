@@ -1,17 +1,19 @@
 import express from 'express';
 import url from 'url';
+import path from 'path';
 import { readFileSync } from 'fs';
 
 import { DB } from './db.js';
 
+const PORT = 3000;
+
 const config = JSON.parse(readFileSync(new URL('config.json', import.meta.url)));
-
 const db = new DB(config.DB);
-
 const app = express();
-const port = 3000;
 
 // Express thingies
+app.use(ensureDBconnected);
+
 app.get('/', (req, res) => {
 	res.redirect('/home');
 });
@@ -24,9 +26,7 @@ app.get('/lepatron', (req, res) => {
 	res.sendFile(resourcePath('public/lepatron.html'));
 });
 
-app.use(express.static(resourcePath('public')));
-
-app.get('/video/:id', ensureDBconnected, async (req, res) => {
+app.get('/video/:id', async (req, res) => {
 	const videoID = req.params.id;
 	const video = await db.getVideo(videoID);
 	if (!video) {
@@ -34,11 +34,14 @@ app.get('/video/:id', ensureDBconnected, async (req, res) => {
 		return;
 	}
 
-	res.send(video);
+	res.sendFile(storagePath(video.Fichier))
 });
 
-const server = app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`);
+app.use(express.static(resourcePath('public')));
+
+// Opening the express server
+const server = app.listen(PORT, () => {
+	console.log(`Example app listening on port ${PORT}`);
 });
 
 // Shutdown handling
@@ -61,12 +64,25 @@ function resourcePath(path) {
 	return url.fileURLToPath(new URL(path, import.meta.url));
 }
 
-function ensureDBconnected(req, res, next) {
+/**
+ * Gets the absolute path to a resource in the storage.
+ * @param {string} path path relative the storage folder
+ * @returns {string} the absolute path
+ */
+function storagePath(pathRelativeToStorage) {
+	return path.join('/storage', pathRelativeToStorage);
+}
+
+async function ensureDBconnected(req, res, next) {
 	if (db.connected) {
-		next()
+		next();
 	} else {
-		res.status(503);
-		res.send("503 Service Unavailable");
+		try {
+			await db.connect();
+			next();
+		} catch (err) {
+			res.status(503).send("503 Service Unavailable");
+		}
 	}
 }
 

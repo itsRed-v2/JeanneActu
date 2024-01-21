@@ -33,12 +33,22 @@ class DB {
 		this.connection.on('error', err => {
 			this.connected = false;
 			if (err.code === "PROTOCOL_CONNECTION_LOST") {
-				console.log("Database connection lost, reconnecting...");
-				this.connectAttempts(10);
+				this.#handleProtocolConnectionLost();
+			} else if (err.code === 4031) {
+				this.#handleInactivityTimeout();
 			} else {
 				throw err;
 			}
-		})
+		});
+	}
+
+	#handleProtocolConnectionLost() {
+		console.log("Database connection lost, reconnecting...");
+		this.connectAttempts(10);
+	}
+
+	#handleInactivityTimeout() {
+		console.log("Database connection timed out due to inactivity.");
 	}
 
 	async execute(sql, values) {
