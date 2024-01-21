@@ -33,7 +33,7 @@ class DB {
 		this.connection.on('error', async err => {
 			await this.connection.close();
 			this.connected = false;
-			
+
 			if (err.code === "PROTOCOL_CONNECTION_LOST") {
 				this.#handleProtocolConnectionLost();
 			} else if (err.code === 4031) {
@@ -68,6 +68,16 @@ class DB {
 
 	async getVideo(id) {
 		const result = await this.execute(`SELECT * FROM Video WHERE Video_id = ?;`, [id]);
+		return result[0];
+	}
+
+	async getNumero(id) {
+		const result = await this.execute(`SELECT * FROM Journal WHERE Edition_id = ?;`, [id]);
+		return result[0];
+	}
+
+	async getAudio(id) {
+		const result = await this.execute(`SELECT * FROM Audio WHERE Audio_id = ?;`, [id]);
 		return result[0];
 	}
 }

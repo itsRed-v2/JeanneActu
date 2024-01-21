@@ -26,15 +26,34 @@ app.get('/lepatron', (req, res) => {
 	res.sendFile(resourcePath('public/lepatron.html'));
 });
 
-app.get('/video/:id', async (req, res, next) => {
-	const videoID = req.params.id;
-	const video = await db.getVideo(videoID);
-	if (!video) {
+app.get('/numero/:id', async (req, res, next) => {
+	const numeroID = req.params.id;
+	const numeroInfo = await db.getNumero(numeroID);
+	if (!numeroInfo) {
 		next();
 		return;
 	}
+	res.sendFile(storagePath(numeroInfo.Fichier));
+});
 
-	res.sendFile(storagePath(video.Fichier));
+app.get('/video/:id', async (req, res, next) => {
+	const videoID = req.params.id;
+	const videoInfo = await db.getVideo(videoID);
+	if (!videoInfo) {
+		next();
+		return;
+	}
+	res.sendFile(storagePath(videoInfo.Fichier));
+});
+
+app.get('/audio/:id', async (req, res, next) => {
+	const audioID = req.params.id;
+	const audioInfo = await db.getAudio(audioID);
+	if (!audioInfo) {
+		next();
+		return;
+	}
+	res.sendFile(storagePath(audioInfo.Fichier));
 });
 
 app.use(express.static(resourcePath('public')));
