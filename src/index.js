@@ -16,6 +16,11 @@ app.get('/lepatron', (req, res) => {
 	res.sendFile(resourcePath('public/lepatron.html'));
 });
 
+app.get('/legal', (req, res) => {
+	res.sendFile(resourcePath('public/mentionsLegales.html'));
+});
+
+
 app.use(express.static(resourcePath('public')));
 
 const server = app.listen(port, () => {
