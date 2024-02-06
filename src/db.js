@@ -66,18 +66,8 @@ class DB {
 		await this.connection?.end();
 	}
 
-	async getVideo(id) {
-		const result = await this.execute(`SELECT * FROM Video WHERE Video_id = ?;`, [id]);
-		return result[0];
-	}
-
-	async getNumero(id) {
-		const result = await this.execute(`SELECT * FROM Journal WHERE Edition_id = ?;`, [id]);
-		return result[0];
-	}
-
-	async getAudio(id) {
-		const result = await this.execute(`SELECT * FROM Audio WHERE Audio_id = ?;`, [id]);
+	async getDocument(id) {
+		const result = await this.execute('SELECT * FROM document WHERE id = ?;', [id]);
 		return result[0];
 	}
 }

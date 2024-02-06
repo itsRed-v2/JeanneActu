@@ -19,44 +19,24 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-	res.sendFile(resourcePath('public/index.html'));
+	res.sendFile(staticResourcePath('public/index.html'));
 });
 
 app.get('/lepatron', (req, res) => {
-	res.sendFile(resourcePath('public/lepatron.html'));
+	res.sendFile(staticResourcePath('public/lepatron.html'));
 });
 
-app.get('/numero/:id', async (req, res, next) => {
-	const numeroID = req.params.id;
-	const numeroInfo = await db.getNumero(numeroID);
-	if (!numeroInfo) {
+app.get('/document/:id', async (req, res, next) => {
+	const documentId = req.params.id
+	const document = await db.getDocument(documentId);
+	if (document) {
+		res.sendFile(storagePath(document.file));
+	} else {
 		next();
-		return;
 	}
-	res.sendFile(storagePath(numeroInfo.Fichier));
 });
 
-app.get('/video/:id', async (req, res, next) => {
-	const videoID = req.params.id;
-	const videoInfo = await db.getVideo(videoID);
-	if (!videoInfo) {
-		next();
-		return;
-	}
-	res.sendFile(storagePath(videoInfo.Fichier));
-});
-
-app.get('/audio/:id', async (req, res, next) => {
-	const audioID = req.params.id;
-	const audioInfo = await db.getAudio(audioID);
-	if (!audioInfo) {
-		next();
-		return;
-	}
-	res.sendFile(storagePath(audioInfo.Fichier));
-});
-
-app.use(express.static(resourcePath('public')));
+app.use(express.static(staticResourcePath('public')));
 
 app.use('/', send404);
 
@@ -82,11 +62,11 @@ process.on('SIGTERM', () => {
 });
 
 /**
- * Gets the absolute path for a resource relative to this file.
+ * Gets the absolute path for a static resource relative to this file.
  * @param {string} path path relative to index.js
  * @returns {string} the absolute path
  */
-function resourcePath(path) {
+function staticResourcePath(path) {
 	return url.fileURLToPath(new URL(path, import.meta.url));
 }
 
