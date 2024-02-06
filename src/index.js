@@ -40,6 +40,16 @@ app.get('/document/:id', async (req, res, next) => {
 	}
 });
 
+app.get('/document/:id/thumbnail', async (req, res, next) => {
+	const documentId = req.params.id
+	const document = await db.getDocument(documentId);
+	if (document && document.thumbnail !== null) {
+		res.sendFile(storagePath(document.thumbnail));
+	} else {
+		next();
+	}
+});
+
 app.use(express.static(staticResourcePath('public')));
 
 app.use('/', send404);
