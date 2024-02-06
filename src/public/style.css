@@ -1,100 +1,49 @@
 :root {
+	--content-width: 70rem;
+		
 	--main: #0a4ea8;
 	--main-transparent: #0a4ea880;
 	--light: #f7f7f7;
+	--grey: #ededed;
 	--dark: #122D40;
 
 	--gradient-opacity: 0.6;
-
 	--gradient: linear-gradient(135deg, #04F, #0CF);
 	--gradient-transparent: linear-gradient(135deg, rgba(0, 68, 255, var(--gradient-opacity)), rgba(0, 204, 255, var(--gradient-opacity)));
 }
 
 body {
 	margin: 0;
+	height: 100vh;
 
 	display: flex;
 	flex-direction: column;
+	align-items: stretch;
 
 	font-family: Arial, Helvetica, sans-serif;
 	background: var(--light);
 }
 
-header {
-	background: var(--gradient);
-	color: white;
-
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-.logo {
-	padding: 20px;
-	margin: 0;
-	height: 4rem;
-}
-
-nav {
-	display: flex;
-	margin: 0 10px;
-	gap: 10px;
-}
-
-nav a {
-	padding: 15px;
-	display: flex;
-	align-items: center;
-	border-radius: 10px 10px 0 0;
-	font-size: large;
-	color: white;
-	text-decoration: none;
-	text-align: center;
-
-	position: relative;
-}
-
-nav a.selected {
-	background: var(--light);
-	color: var(--main);
-}
-
-nav a::after {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	height: 3px;
-	width: 100%;
-	background-color: var(--light);
-	content: ' ';
-	transition: 0.2s;
-	transform: scaleX(0);
-}
-
-nav a:not(.selected):hover::after {
-	transform: scaleX(1);
-}
-
 h1 {
-	color: var(--dark);
 	font-size: xx-large;
 	margin: 1rem 0;
 }
 
+h1, h2 {
+	color: var(--dark);
+}
+
 main {
-	display: flex;
-	justify-content: center;
-}
-
-.content {
-	padding: 20px;
+	width: var(--content-width);
 	max-width: 100%;
-	box-sizing: border-box;
-	align-self: center;
-}
 
-.info {
-	max-width: 55rem;
+	padding: 20px;
+	margin: 0 auto;
+	box-sizing: border-box;
+	flex-grow: 1;
+
+	background: var(--light);
+	/* box-shadow: 0 0 15px #0003; */
 }
 
 .sorties {

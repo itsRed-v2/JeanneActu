@@ -26,6 +26,10 @@ app.get('/lepatron', (req, res) => {
 	res.sendFile(staticResourcePath('public/lepatron.html'));
 });
 
+app.get('/legal', (req, res) => {
+	res.sendFile(staticResourcePath('public/mentionsLegales.html'));
+});
+
 app.get('/document/:id', async (req, res, next) => {
 	const documentId = req.params.id
 	const document = await db.getDocument(documentId);
