@@ -11,7 +11,8 @@ const config = JSON.parse(readFileSync(new URL('config.json', import.meta.url)))
 const db = new DB(config.DB);
 
 const app = express();
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
+app.set('views', absolutePath('views'));
 
 // Express routes
 app.use(ensureDBconnected); // Always send 503 error if db is down
@@ -70,7 +71,7 @@ app.get('/document/:id/thumbnail', async (req, res, next) => {
 	}
 });
 
-app.use(express.static(staticResourcePath('public')));
+app.use(express.static(absolutePath('public')));
 
 app.use('/', send404);
 
@@ -96,12 +97,12 @@ process.on('SIGTERM', () => {
 });
 
 /**
- * Gets the absolute path for a static resource relative to this file.
- * @param {string} path path relative to index.js
+ * Gets the absolute path for a directory relative to this file.
+ * @param {string} dir path relative to index.js
  * @returns {string} the absolute path
  */
-function staticResourcePath(path) {
-	return url.fileURLToPath(new URL(path, import.meta.url));
+function absolutePath(dir) {
+	return url.fileURLToPath(new URL(dir, import.meta.url));
 }
 
 /**
