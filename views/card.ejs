@@ -1,0 +1,22 @@
+<div class="numero-container">
+    <h2 class="numero-title"><%= title %></h2>
+    <img class="miniature" src="<%= miniatureUrl %>">
+    <div class="numero-container-bottom">
+        <div class="numero-info">
+            <img src="<%= (type === 'numero' ? 'images/journal.png' : 'images/clap.png') %>">
+            <% if (locals.number) { %>
+                <span>n°<%= number %></span>
+            <% } %>
+            <span><%= date %></span>
+        </div>
+        <a href="<%= documentUrl %>" target="_blank" class="see-button">
+            <% if (type === 'numero') { %>
+                <img src="images/oeil.png">
+                <span>Afficher</span>
+            <% } else { %>
+                <img src="images/jouer.png">
+                <span>Visionner</span>
+            <% } %>
+        </a>
+    </div>
+</div>

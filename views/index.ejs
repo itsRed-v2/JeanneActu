@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('head', { title: 'Home' }) %>
+</head>
+<body>
+   	<%- include('header') %>
+	<main>
+		<h1>Jeanne Actu, c'est quoi ?</h1>
+		<p>
+			Jeanne Actu, c’est le journal des lycéens de Jeanne d’Albret ! Chaque mois, tu trouveras un nouveau numéro du journal.<br/>
+			Notre but, c’est de te donner accès à une actu plus <a class="invisible-link" href="https://youtu.be/dQw4w9WgXcQ?si=410pMiFK14rJdIfg" target="_blank">cool</a>.<br/>
+			Au programme : articles et interviews sur des sujets variés, allant de la culture à la vie lycéenne, en passant par les jeux vidéos, les mangas, la science, et encore bien d’autres rubriques…<br/>
+			Ne manquez pas non plus nos vidéos spéciales toutes les deux semaines !<br/>
+			Bref, on a forcément ce qui te branche ! 😉
+		</p>
+		<p>
+			On attend vos retours sur le compte instagram des ambassadeurs culture : @culture_jda !
+		</p>
+		<h1>Nos dernières sorties :</h1>
+		<div class="sorties">
+			<% for (const cardData of cards) { %>
+				<%- include('card', cardData) %>
+			<% } %>
+		</div>
+	</main>
+	<%- include('footer') %>
+</body>
+</html>

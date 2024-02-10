@@ -9,25 +9,45 @@ const PORT = 3000;
 
 const config = JSON.parse(readFileSync(new URL('config.json', import.meta.url)));
 const db = new DB(config.DB);
-const app = express();
 
-// Express thingies
-app.use(ensureDBconnected);
+const app = express();
+app.set('view engine', 'ejs')
+
+// Express routes
+app.use(ensureDBconnected); // Always send 503 error if db is down
 
 app.get('/', (req, res) => {
 	res.redirect('/home');
 });
 
 app.get('/home', (req, res) => {
-	res.sendFile(staticResourcePath('public/index.html'));
+	res.render('index', {
+		cards: [
+			{
+				type: 'numero',
+				title: "Jeanne Actu - Numéro 1",
+				miniatureUrl: "document/2/thumbnail",
+				number: "1",
+				date: "19/01/2024",
+				documentUrl: "document/2"
+			},
+			{
+				type: 'video',
+				title: "Interview D'Alexis Regulus",
+				miniatureUrl: "document/3/thumbnail",
+				date: "19/01/2024",
+				documentUrl: "document/3"
+			},
+		]
+	});
 });
 
 app.get('/lepatron', (req, res) => {
-	res.sendFile(staticResourcePath('public/lepatron.html'));
+	res.render('lepatron');
 });
 
 app.get('/legal', (req, res) => {
-	res.sendFile(staticResourcePath('public/mentionsLegales.html'));
+	res.render('mentionsLegales');
 });
 
 app.get('/document/:id', async (req, res, next) => {
