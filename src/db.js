@@ -70,6 +70,14 @@ class DB {
 		const result = await this.execute('SELECT * FROM document WHERE id = ?;', [id]);
 		return result[0];
 	}
+
+	async getLatestDocument(type) {
+		if (!['numero', 'video', 'audio'].includes(type)) 
+			throw new Error(`Unknown type: "${type}"`);
+		
+		const latest = await this.execute(`SELECT * FROM document WHERE type = ? ORDER BY publication_date DESC LIMIT 1;`, [type]);
+		return latest[0];
+	}
 }
 
 export {

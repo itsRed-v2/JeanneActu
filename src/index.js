@@ -21,26 +21,30 @@ app.get('/', (req, res) => {
 	res.redirect('/home');
 });
 
-app.get('/home', (req, res) => {
-	res.render('index', {
-		cards: [
-			{
-				type: 'numero',
-				title: "Jeanne Actu - Numéro 1",
-				miniatureUrl: "document/2/thumbnail",
-				number: "1",
-				date: "19/01/2024",
-				documentUrl: "document/2"
-			},
-			{
-				type: 'video',
-				title: "Interview D'Alexis Regulus",
-				miniatureUrl: "document/3/thumbnail",
-				date: "19/01/2024",
-				documentUrl: "document/3"
-			},
-		]
-	});
+app.get('/home', async (req, res) => {
+	let dernierNumero = transformData(await db.getLatestDocument('numero'));
+	let derniereVideo = transformData(await db.getLatestDocument('video'));
+	res.render('index', { cards: [dernierNumero, derniereVideo] });
+
+	// translates the data from the database to data for the card ejs template
+	function transformData(data) {
+		let { id, type, title, publication_date, number } = data;
+		return {
+			type,
+			title,
+			number,
+			date: formatDate(publication_date),
+			documentUrl: 'document/' + id,
+			miniatureUrl: 'document/' + id + '/thumbnail'
+		};
+	}
+
+	function formatDate(date) {
+		const dayOfMonth = date.getUTCDate();
+		const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+		const year = date.getUTCFullYear();
+		return dayOfMonth + '/' + month + '/' + year;
+	}
 });
 
 app.get('/lepatron', (req, res) => {
