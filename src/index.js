@@ -75,7 +75,8 @@ app.get('/document/:id/thumbnail', async (req, res, next) => {
 	}
 });
 
-app.use(express.static(absolutePath('public')));
+app.use('/public', express.static(absolutePath('public')));
+app.use('/media', express.static(config.storagePath));
 
 app.use('/', send404);
 
@@ -111,11 +112,11 @@ function absolutePath(dir) {
 
 /**
  * Gets the absolute path to a resource in the storage.
- * @param {string} path path relative the storage folder
+ * @param {string} path path relative to the storage folder
  * @returns {string} the absolute path
  */
 function storagePath(pathRelativeToStorage) {
-	return path.join('/storage', pathRelativeToStorage);
+	return path.join(config.storagePath, pathRelativeToStorage);
 }
 
 async function ensureDBconnected(req, res, next) {
