@@ -28,14 +28,14 @@ app.get('/home', async (req, res) => {
 
 	// translates the data from the database to data for the card ejs template
 	function transformData(data) {
-		let { id, type, title, publication_date, number } = data;
+		let { id, type, title, publication_date, number, thumbnail } = data;
 		return {
 			type,
 			title,
 			number,
 			date: formatDate(publication_date),
 			documentUrl: 'document/' + id,
-			miniatureUrl: 'document/' + id + '/thumbnail'
+			thumbnailUrl: (thumbnail ? mediaPath(thumbnail) : undefined)
 		};
 	}
 
@@ -85,16 +85,6 @@ app.get('/document/:id', async (req, res, next) => {
 		default:
 			console.error('Unknown type:', document.type);
 			break;
-	}
-});
-
-app.get('/document/:id/thumbnail', async (req, res, next) => {
-	const documentId = req.params.id
-	const document = await db.getDocument(documentId);
-	if (document && document.thumbnail !== null) {
-		res.sendFile(storagePath(document.thumbnail));
-	} else {
-		next();
 	}
 });
 
