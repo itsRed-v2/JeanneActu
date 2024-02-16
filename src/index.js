@@ -13,6 +13,8 @@ const db = new DB(config.DB);
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', absolutePath('views'));
+// The head.ejs view always needs this so we add it permanently, this way we don't need to pass it to every render() call
+app.locals.plausibleDataDomain = config.plausibleDataDomain;
 
 // Express routes
 app.use(ensureDBconnected); // Always send 503 error if db is down
