@@ -1,0 +1,23 @@
+<!-- 
+	NOTE: 
+	THIS VIEW IS NOT USED FOR THE MOMENT
+	DUE TO INCOMPATIBILITY THROUGH BROWSERS
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('head', { title }) %>
+
+	<style>
+		embed {
+			height: 100vh;
+		}
+	</style>
+</head>
+<body>
+	<embed src="<%= pdfUrl %>" type="application/pdf">
+</body>
+</html>
+
+

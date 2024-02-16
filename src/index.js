@@ -58,10 +58,33 @@ app.get('/legal', (req, res) => {
 app.get('/document/:id', async (req, res, next) => {
 	const documentId = req.params.id
 	const document = await db.getDocument(documentId);
-	if (document) {
-		res.sendFile(storagePath(document.file));
-	} else {
+	if (!document) {
 		next();
+		return;
+	}
+
+	switch (document.type) {
+		case 'video':
+			res.render('videoReader', {
+				title: document.title,
+				videoUrl: mediaPath(document.file),
+			});
+			break;
+	
+		case 'audio':
+			res.render('audioReader', {
+				title: document.title,
+				audioUrl: mediaPath(document.file),
+			});
+			break;
+		
+		case 'numero':
+			res.sendFile(storagePath(document.file));
+			break;
+
+		default:
+			console.error('Unknown type:', document.type);
+			break;
 	}
 });
 
@@ -117,6 +140,15 @@ function absolutePath(dir) {
  */
 function storagePath(pathRelativeToStorage) {
 	return path.join(config.storagePath, pathRelativeToStorage);
+}
+
+/**
+ * Gets the URL path to a resource in the storage.
+ * @param {string} path path relative to the storage folder
+ * @returns {string} the URL path to access this resource
+ */
+function mediaPath(pathRelativeToStorage) {
+	return path.join('/media', pathRelativeToStorage);
 }
 
 async function ensureDBconnected(req, res, next) {

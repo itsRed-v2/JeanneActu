@@ -1,6 +1,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="/public/logos/favicon/grey.png" />
-<title>Jeanne Actu - <%= title %></title>
+<title><%= title %></title>
 
 <link rel="stylesheet" href="/public/style.css">
+
+<script>
+	if (!document.title.startsWith('Jeanne Actu - ')) {
+		document.title = 'Jeanne Actu - ' + document.title;
+	}
+</script>

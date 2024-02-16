@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('head', { title }) %>
+
+    <style>
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        audio {
+            width: 100%;
+        }   
+        h1 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <%- include('header') %>
+    <main>
+        <h1><%= title %></h1>
+        <audio controls autoplay src="<%= audioUrl %>"></video>
+    </main>
+	<%- include('footer') %>
+</body>
+</html>
