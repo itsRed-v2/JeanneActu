@@ -81,7 +81,10 @@ app.get('/document/:id', async (req, res, next) => {
 			break;
 		
 		case 'numero':
-			res.sendFile(storagePath(document.file));
+			res.render('pdfReader', {
+				title: document.title,
+				pdfUrl: mediaPath(document.file),
+			});
 			break;
 
 		default:

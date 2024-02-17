@@ -1,22 +1,18 @@
-<!-- 
-	NOTE: 
-	THIS VIEW IS NOT USED FOR THE MOMENT
-	DUE TO INCOMPATIBILITY THROUGH BROWSERS
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<%- include('head', { title }) %>
 
+	<meta http-equiv="Refresh" content="0; URL='<%= pdfUrl %>'" />
+
 	<style>
-		embed {
-			height: 100vh;
+		h1 {
+			margin: auto;
 		}
 	</style>
 </head>
 <body>
-	<embed src="<%= pdfUrl %>" type="application/pdf">
+	<h1>Redirecting...</h1>
 </body>
 </html>
 
