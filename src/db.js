@@ -78,6 +78,17 @@ class DB {
 		const latest = await this.execute(`SELECT * FROM document WHERE type = ? ORDER BY publication_date DESC LIMIT 1;`, [type]);
 		return latest[0];
 	}
+
+	async addLike(documentId) {
+		if (!documentId.match(/\d+/)) return false;
+		const { affectedRows } = await this.execute('INSERT INTO likes (document_id) SELECT ? WHERE EXISTS(SELECT * FROM document WHERE id = ?);', [documentId, documentId]);
+		return affectedRows !== 0;
+	}
+
+	async getLikes(documentId) {
+		const result = await this.execute('SELECT (SELECT COUNT(*) FROM `likes` WHERE document_id = ?) as like_count WHERE EXISTS(SELECT * FROM document WHERE id = ?);', [documentId, documentId]);
+		return result[0]?.['like_count'];
+	}
 }
 
 export {

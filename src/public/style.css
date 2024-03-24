@@ -60,46 +60,45 @@ main {
 	border-radius: 15px;
 	box-shadow: 0 0 5px #0008;
 	background-color: rgba(0, 0, 0, 0.07);
-}
 
-.numero-container-bottom {
-	margin-top: 10px;
 	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-	gap: 5px;
+	flex-direction: column;
+	gap: 10px;
 }
 
 .miniature {
 	width: 20rem;
 	max-width: 100%;
-	margin-top: 10px;
 	border-radius: 10px;
-}
-
-.numero-info {
-	display: flex;
-	align-items: center;
-}
-
-.numero-info span {
-	margin-right: 10px;
-	opacity: 0.5;
-}
-
-.numero-info img {
-	height: 25px;
-	margin-right: 10px;
-	opacity: 0.5;
 }
 
 .numero-title {
 	margin: 0;
 }
 
-.see-button {
-	margin-left: auto;
+.numero-info-row {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
 
+.numero-info-row span {
+	opacity: 0.5;
+}
+
+.numero-info-row img {
+	height: 25px;
+	opacity: 0.5;
+}
+
+.card-buttons-row {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 5px;
+}
+
+.card-button, .card-button--no-darken {
 	display: flex;
 	align-items: center;
 	padding: 8px;
@@ -112,25 +111,45 @@ main {
 
 	text-decoration: none;
 	color: black;
-	/* color: white;
-	font-weight: bold; */
 }
 
-.see-button:hover {
+.card-button img, .card-button--no-darken img {
+	max-height: 1.1rem;
+	max-width: 1.1rem;
+}
+
+.card-button:hover {
 	filter: brightness(0.8);
 }
 
-.see-button:active {
+.card-button:active {
 	filter: brightness(0.6);
 }
 
-.see-button img {
-	max-height: 1.1rem;
-	max-width: 1.1rem;
+.card-spacer {
+	flex-grow: 1;
 }
 
 .invisible-link {
 	color: inherit;
 	text-decoration: inherit;
 	cursor: inherit;
+}
+
+.dislike > img {
+	transform: rotate(180deg);
+}
+
+.dislike-container {
+	position: relative;
+}
+
+.dislike-container__hover-zone {
+	position: absolute;
+	z-index: 10;
+	inset: -2px;
+}
+
+.dislike-container__hover-zone:hover ~ .dislike {
+	transform: translateY(120%);
 }

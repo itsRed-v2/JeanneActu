@@ -32,6 +32,7 @@ app.get('/home', async (req, res) => {
 	function transformData(data) {
 		let { id, type, title, publication_date, number, thumbnail } = data;
 		return {
+			id,
 			type,
 			title,
 			number,
@@ -95,6 +96,19 @@ app.get('/document/:id', async (req, res, next) => {
 
 app.use('/public', express.static(absolutePath('public')));
 app.use('/media', express.static(config.storagePath));
+
+app.get('/api/like/get/:id', async (req, res) => {
+	const likes = await db.getLikes(req.params.id);
+	if (likes === undefined) res.status(404).end();
+	else res.send({ likes });
+});
+
+app.post('/api/like/add/:id', async (req, res) => {
+	const success = await db.addLike(req.params.id);
+	if (success === true) res.status(201);
+	else res.status(404);
+	res.end();
+});
 
 app.use('/', send404);
 
