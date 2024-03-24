@@ -33,6 +33,10 @@ h1, h2 {
 	color: var(--dark);
 }
 
+button {
+	font-size: 100%;
+}
+
 main {
 	width: var(--content-width);
 	max-width: 100%;
@@ -103,6 +107,8 @@ main {
 	align-items: center;
 	padding: 8px;
 	gap: 5px;
+	height: 35px;
+	box-sizing: border-box;
 
 	border: none;
 	border-radius: 10px;

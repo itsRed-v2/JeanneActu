@@ -25,6 +25,20 @@ function updateLikeCounters() {
 	}
 }
 
+function hasTouchSupport() {
+	return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+}
+
+function hideDislikeOnTouchScreenDevices() {
+	if (!hasTouchSupport()) return;
+
+	const dislikeContainers = document.getElementsByClassName('dislike-container');
+	for (let container of dislikeContainers) {
+		container.style.display = 'none';
+	}
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+	hideDislikeOnTouchScreenDevices();
 	updateLikeCounters();
 });
