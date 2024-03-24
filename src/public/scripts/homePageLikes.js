@@ -1,8 +1,20 @@
-const likedDocuments = [];
+function getLikedDocuments() {
+	return JSON.parse(localStorage.getItem('likedDocuments')) ?? [];
+}
+
+function isDocumentLiked(document_id) {
+	return getLikedDocuments().includes(document_id);
+}
+
+function addLikedDocument(document_id) {
+	const likedDocuments = getLikedDocuments();
+	likedDocuments.push(document_id);
+	localStorage.setItem('likedDocuments', JSON.stringify(likedDocuments));
+}
 
 async function sendLike(document_id) {
-	if (likedDocuments.includes(document_id)) return;
-	likedDocuments.push(document_id);
+	if (isDocumentLiked(document_id)) return;
+	addLikedDocument(document_id);
 
 	await fetch(`/api/like/add/${document_id}`, { method: 'POST' });
 	updateLikeCounters();
