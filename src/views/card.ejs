@@ -1,33 +1,39 @@
-<div class="numero-container">
-    <img class="miniature" src="<%= thumbnailUrl %>">
-    <h2 class="numero-title"><%= title %></h2>
-    <div class="numero-info-row">
-        <img src="<%= (type === 'numero' ? '/public/images/journal.png' : '/public/images/clap.png') %>">
-        <% if (locals.number) { %>
-            <span>n°<%= number %></span>
-        <% } %>
-        <span><%= date %></span>
+<div class="card">
+    <div class="card__top">
+        <div class="card__top__shadow"></div>
+        <img src="<%= thumbnailUrl %>">
     </div>
-    <div class="card-buttons-row">
-        <div class="dislike-container">
-            <div class="dislike-container__hover-zone"></div>
-            <button class="card-button--no-darken dislike">
-                <img src="/public/images/like.svg">
-            </button>
-        </div>
-        <button class="card-button" onclick="sendLike('<%= id %>')">
-            <img src="/public/images/like.svg">
-            <span class="js-like-counter" id="js-like-counter-id-<%= id %>">--</span>
-        </button>
-        <div class="card-spacer"></div>
-        <a href="<%= documentUrl %>" target="_blank" class="card-button">
-            <% if (type === 'numero') { %>
-                <img src="/public/images/oeil.png">
-                <span>Afficher</span>
-            <% } else { %>
-                <img src="/public/images/jouer.png">
-                <span>Visionner</span>
+    
+    <div class="card__bottom">
+        <h2 class="numero-title"><%= title %></h2>
+        <div class="numero-info-row">
+            <img src="<%= (type === 'numero' ? '/public/images/journal.png' : '/public/images/clap.png') %>">
+            <% if (locals.number) { %>
+                <span>n°<%= number %></span>
             <% } %>
-        </a>
+            <span><%= date %></span>
+        </div>
+        <div class="card-buttons-row">
+            <div class="dislike-container">
+                <div class="dislike-container__hover-zone"></div>
+                <button class="card-button--no-darken dislike">
+                    <img src="/public/images/like.svg">
+                </button>
+            </div>
+            <button class="card-button" onclick="sendLike('<%= id %>')">
+                <img src="/public/images/like.svg">
+                <span class="js-like-counter" id="js-like-counter-id-<%= id %>">--</span>
+            </button>
+            <div class="card-spacer"></div>
+            <a href="<%= documentUrl %>" target="_blank" class="card-button">
+                <% if (type === 'numero') { %>
+                    <img src="/public/images/oeil.png">
+                    <span>Afficher</span>
+                <% } else { %>
+                    <img src="/public/images/jouer.png">
+                    <span>Visionner</span>
+                <% } %>
+            </a>
+        </div>
     </div>
 </div>
