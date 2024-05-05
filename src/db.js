@@ -71,12 +71,8 @@ class DB {
 		return result[0];
 	}
 
-	async getLatestDocument(type) {
-		if (!['numero', 'video', 'audio'].includes(type)) 
-			throw new Error(`Unknown type: "${type}"`);
-		
-		const latest = await this.execute(`SELECT * FROM document WHERE type = ? ORDER BY publication_date DESC LIMIT 1;`, [type]);
-		return latest[0];
+	async getHomeDocuments() {
+		return await this.execute('SELECT * FROM `document` WHERE type in ("numero", "video") ORDER BY publication_date DESC;');
 	}
 
 	async addLike(documentId) {

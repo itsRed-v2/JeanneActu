@@ -24,9 +24,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', async (req, res) => {
-	let dernierNumero = transformData(await db.getLatestDocument('numero'));
-	let derniereVideo = transformData(await db.getLatestDocument('video'));
-	res.render('index', { cards: [dernierNumero, derniereVideo] });
+	const documents = await db.getHomeDocuments();
+	res.render('index', { cards: documents.map(transformData) });
 
 	// translates the data from the database to data for the card ejs template
 	function transformData(data) {
@@ -38,7 +37,7 @@ app.get('/home', async (req, res) => {
 			number,
 			date: formatDate(publication_date),
 			documentUrl: 'document/' + id,
-			thumbnailUrl: (thumbnail ? mediaPath(thumbnail) : undefined)
+			thumbnailUrl: (thumbnail ? mediaPath(thumbnail) : "public/images/no-image.svg")
 		};
 	}
 
