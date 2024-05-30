@@ -64,9 +64,9 @@ main {
 	width: 20rem;
 	height: 25rem;
 	border-radius: 15px;
-	border: 1px solid #989898;
-	box-shadow: 0 0 5px #0006;
-	background-color: rgb(215, 215, 215);
+	border: 1px solid #0003;
+	box-shadow: 0 1px 5px #0003;
+	background-color: white;
 
 	display: flex;
 	flex-direction: column;
@@ -80,8 +80,6 @@ main {
 }
 
 .card__top {
-	flex-shrink: 1;
-	position: relative;
 	overflow: hidden;
 
 	display: flex;
@@ -94,13 +92,7 @@ main {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
-}
-
-.card__top__shadow {
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	background: linear-gradient(0deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 50%);
+	box-shadow: 0 0 20px #000;
 }
 
 .numero-title {
