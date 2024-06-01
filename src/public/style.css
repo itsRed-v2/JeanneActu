@@ -79,7 +79,7 @@ main {
 	}
 }
 
-.card__top {
+.card__top, .card__top a {
 	overflow: hidden;
 
 	display: flex;
@@ -95,7 +95,11 @@ main {
 	box-shadow: 0 0 20px #000;
 }
 
-.numero-title {
+.card__bottom__title {
+	text-decoration: none;
+}
+
+.card__bottom__title > h2 {
 	margin: 0;
 }
 

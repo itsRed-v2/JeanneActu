@@ -1,10 +1,14 @@
 <div class="card">
     <div class="card__top">
-        <img src="<%= thumbnailUrl %>">
+        <a href="<%= documentUrl %>">
+            <img src="<%= thumbnailUrl %>">
+        </a>
     </div>
     
     <div class="card__bottom">
-        <h2 class="numero-title"><%= title %></h2>
+        <a href="<%= documentUrl %>" class="card__bottom__title">
+            <h2><%= title %></h2>
+        </a>
         <div class="numero-info-row">
             <img src="<%= (type === 'numero' ? '/public/images/journal.png' : '/public/images/clap.png') %>">
             <% if (locals.number) { %>
