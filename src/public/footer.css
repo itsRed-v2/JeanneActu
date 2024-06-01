@@ -38,7 +38,7 @@ footer {
 
 	width: fit-content;
 	display: flex;
-	flex-direction: column;
+	gap: 5px;
 	position: relative;	
 }
 
@@ -54,4 +54,8 @@ footer {
 
 .footer__links a:hover::after {
 	width: 100%;
+}
+
+.footer__links a img {
+	width: 0.8em;
 }
