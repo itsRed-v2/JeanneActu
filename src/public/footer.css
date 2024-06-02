@@ -31,31 +31,3 @@ footer {
 .footer__logo img {
 	height: 3rem;
 }
-
-.footer__links a {
-	color: white;
-	text-decoration: none;
-
-	width: fit-content;
-	display: flex;
-	gap: 5px;
-	position: relative;	
-}
-
-.footer__links a::after {
-	content: " ";
-	background-color: white;
-	width: 0%;
-	height: 1px;
-	position: absolute;
-	bottom: -2px;
-	transition: 0.2s;
-}
-
-.footer__links a:hover::after {
-	width: 100%;
-}
-
-.footer__links a img {
-	width: 0.8em;
-}
