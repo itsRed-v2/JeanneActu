@@ -3,16 +3,42 @@
 <head>
 	<%- include('head', { title }) %>
 
-	<meta http-equiv="Refresh" content="0; URL='<%= pdfUrl %>'" />
+	<link rel="stylesheet" href="/public/pdfReader.css">
 
-	<style>
-		h1 {
-			margin: auto;
-		}
-	</style>
+	<script type="module">
+		globalThis.pdfUrl = "<%= pdfUrl %>";
+	</script>
+	<script type="module" src="/public/scripts/pdfReader.js"></script>
 </head>
 <body>
-	<h1>Redirecting...</h1>
+	<div class="toolbar">
+		<a class="toolbar__logo-link" href="/" title="Retourner à la page d'accueil">
+			<img src="/public/logos/long/grey.svg" alt="Logo Jeanne actu">
+		</a>
+		<div class="toolbar__left">
+			<div class="toolbar__zoom-area">
+				<span id="toolbar__zoom-value" class="toolbar__zoom-value">100%</span>
+				<button id="zoom-in-button" class="toolbar__button" title="Plus grand">
+					<img src="/public/images/toolbar/zoom-in.png">
+				</button>
+				<button id="zoom-out-button" class="toolbar__button" title="Plus petit">
+					<img src="/public/images/toolbar/zoom-out.png">
+				</button>
+				<button id="zoom-reset-button" class="toolbar__button" title="Réinitializer le zoom">
+					<img src="/public/images/toolbar/zoom-reset.png">
+				</button>
+			</div>
+			<button class="toolbar__button" title="Télécharger le PDF">
+				<img src="/public/images/toolbar/download.png" alt="">
+			</button>
+		</div>
+	</div>
+	<div id="view-area" class="view-area">
+		<div id="page-container" class="page-container">
+			<canvas id="left-page"></canvas>
+			<canvas id="right-page"></canvas>
+		</div>
+	</div>
 </body>
 </html>
 
