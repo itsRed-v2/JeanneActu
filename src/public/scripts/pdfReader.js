@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", event => {
     document.getElementById("zoom-reset-button").addEventListener('click', onZoomReset);
 });
 
-let zoom = 100; // Zoom is in percentage (to prevent floating-point errors)
+let zoom = 100; // Zoom is in percentage (to prevent floating-point errors on repeated additions / subractions)
 
 function onZoomIn() {
     if (zoom >= 300) return;
