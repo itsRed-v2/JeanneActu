@@ -49,8 +49,8 @@ async function updateCanvasSize(pdf, pageNumber, canvasId) {
     let viewport = getScaledViewport(page);
     let canvas = document.getElementById(canvasId);
 
-    canvas.style.width = Math.floor(viewport.width) + "px";
-    canvas.style.height =  Math.floor(viewport.height) + "px";
+    canvas.style.width = Math.floor(viewport.width - 1) + "px";
+    canvas.style.height =  Math.floor(viewport.height - 1) + "px";
 }
 
 let drawScheduleId = undefined;

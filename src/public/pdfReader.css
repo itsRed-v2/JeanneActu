@@ -58,16 +58,15 @@ canvas {
 
 .view-area {
     flex-grow: 1;
-    overflow: hidden;
-    z-index: -100;
-
+    overflow: auto;
     display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .page-container {
     display: flex;
     flex-direction: row;
     gap: 5px;    
+    padding: 20px;
+    margin: auto;
+    z-index: -100;
 }
