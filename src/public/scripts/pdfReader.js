@@ -9,22 +9,30 @@ const PDF_URL = globalThis.pdfUrl; // This value is passed through by EJS with a
 // Global variables
 let pdf;
 let viewerState;
-let zoom = 100; // Zoom is in percentage (to prevent floating-point errors on repeated additions / subractions)
+let zoomPercent;
 
 document.addEventListener("DOMContentLoaded", async event => {
-    // PDF and state machine initialisation
+    // Centering the page selector (do it before loading pdf, or it would stay off center until pdf fully loaded)
+    balanceToolbar();
+
+    // Loading PDF (This must be done very early as nearly all others functions rely on the pdf global variable)
     console.log("Loading:", PDF_URL);
     pdf = await pdfjsLib.getDocument(PDF_URL).promise
-    console.log("Pdf has loaded.");
+    console.log("Pdf successfully loaded.");
 
+    // Global variable initialization
     viewerState = {
         leftPageNumber: 1,
-        rightPageNumber: 2,
-        showRightPage: true,
+        rightPageNumber: -1,
+        showRightPage: false
     };
+    zoomPercent = 100;
 
     // Initial canvas draw.
     draw();
+
+    // Initializing toolbar
+    initPageSelector();
 
     // Event registering
     window.addEventListener('resize', () => {
@@ -35,13 +43,18 @@ document.addEventListener("DOMContentLoaded", async event => {
     document.getElementById("zoom-in-button").addEventListener('click', onZoomIn);
     document.getElementById("zoom-out-button").addEventListener('click', onZoomOut);
     document.getElementById("zoom-reset-button").addEventListener('click', onZoomReset);
+    document.getElementById("next-page-button").addEventListener('click', onNextPage);
+    document.getElementById("prev-page-button").addEventListener('click', onPrevPage);
+    document.getElementById("page-number-field").addEventListener('change', onInputChange);
+    document.getElementById("page-number-field").addEventListener('focus', onInputFocus);
 });
 
 // ### PDF RENDERING / CANVAS MANIPULATION ###
 
 function resizeAllCanvases() {
     updateCanvasSize(pdf, viewerState.leftPageNumber, 'left-page');
-    updateCanvasSize(pdf, viewerState.rightPageNumber, 'right-page');
+    if (viewerState.showRightPage)
+        updateCanvasSize(pdf, viewerState.rightPageNumber, 'right-page');
 }
 
 async function updateCanvasSize(pdf, pageNumber, canvasId) {
@@ -67,7 +80,13 @@ function scheduleDraw() {
 
 function draw() {
     drawPage(pdf, viewerState.leftPageNumber, 'left-page');
-    drawPage(pdf, viewerState.rightPageNumber, 'right-page');
+
+    if (viewerState.showRightPage) {
+        drawPage(pdf, viewerState.rightPageNumber, 'right-page');
+        document.getElementById('right-page').style.display = "";
+    } else {
+        document.getElementById('right-page').style.display = "none";
+    }
 }
 
 async function drawPage(pdf, pageNumber, canvasId) {
@@ -100,7 +119,7 @@ function getScaledViewport(page) {
     let scaleX = maxSize.width / viewport.width;
     let scaleY = maxSize.height / viewport.height;
     let minScale = Math.min(scaleX, scaleY);
-    let scaledViewport = page.getViewport({ scale: minScale * (zoom / 100) });
+    let scaledViewport = page.getViewport({ scale: minScale * (zoomPercent / 100) });
     return scaledViewport;
 }
 
@@ -122,30 +141,119 @@ function getCanvasMaxSize() {
 // ### ZOOM CONTROLS ###
 
 function onZoomIn() {
-    if (zoom >= 300) return;
+    if (zoomPercent >= 300) return;
   
-    if (zoom >= 160) zoom += 20;
-    else zoom += 10;
+    if (zoomPercent >= 160) zoomPercent += 20;
+    else zoomPercent += 10;
 
     updateZoom();
 }
 
 function onZoomOut() {
-    if (zoom <= 20) return;
+    if (zoomPercent <= 20) return;
 
-    if (zoom >= 170) zoom -= 20;
-    else zoom -= 10;
+    if (zoomPercent >= 170) zoomPercent -= 20;
+    else zoomPercent -= 10;
 
     updateZoom();
 }
 
 function onZoomReset () {
-    zoom = 100;
+    zoomPercent = 100;
     updateZoom();
 }
 
 function updateZoom() {
     resizeAllCanvases();
     scheduleDraw();
-    document.getElementById("toolbar__zoom-value").textContent = zoom + "%";
+    document.getElementById("toolbar__zoom-value").textContent = zoomPercent + "%";
+}
+
+// ### TOOLBAR SPACE DISTRIBUTION ###
+
+function balanceToolbar() {
+    const leftSection = document.getElementById('toolbar__left');
+    const rightSection = document.getElementById('toolbar__right');
+
+    let maxWidth = Math.ceil(Math.max(
+        leftSection.getBoundingClientRect().width,
+        rightSection.getBoundingClientRect().width
+    ));
+
+    leftSection.style.width = maxWidth + "px";
+    rightSection.style.width = maxWidth + "px";
+}
+
+// ### PAGE SELECTOR ###
+
+let pagePairIndex = 0;
+let lastPairIndex = 0;
+
+function initPageSelector() {
+    document.getElementById('page-count-inicator').textContent = pdf.numPages;
+    lastPairIndex = Math.floor(pdf.numPages / 2);
+
+    updatePageSelector();
+}
+
+function onNextPage() { // Fired when the "next page" button is pressed
+    if (pagePairIndex >= lastPairIndex) return;
+
+    pagePairIndex++;
+    calculatePageNumbers();
+    updatePageSelector();
+    draw();
+}
+
+function onPrevPage() { // Fired when the "previous page" button is pressed
+    if (pagePairIndex <= 0) return;
+
+    pagePairIndex--;
+    calculatePageNumbers();
+    updatePageSelector();
+    draw();
+}
+
+function onInputChange() {
+    const input = document.getElementById("page-number-field");
+    if (!input.value.trim().match(/^\d+$/)) return;
+
+    pagePairIndex = Math.floor(parseInt(input.value) / 2);
+    // Clamp between 0 and lastPairIndex
+    pagePairIndex = Math.min(Math.max(pagePairIndex, 0), lastPairIndex);
+    
+    calculatePageNumbers();
+    updatePageSelector();
+    draw();
+}
+
+function onInputFocus() {
+    document.getElementById("page-number-field").select();
+}
+
+function calculatePageNumbers() {
+    if (pagePairIndex === 0) {
+        viewerState.leftPageNumber = 1;
+        viewerState.rightPageNumber = -1; // Hide right page
+    } else {
+        viewerState.leftPageNumber = pagePairIndex * 2;
+        viewerState.rightPageNumber = pagePairIndex * 2 + 1;
+    }
+
+    viewerState.showRightPage = viewerState.rightPageNumber <= pdf.numPages && viewerState.rightPageNumber >= 1;
+}
+
+function updatePageSelector() {
+    const input = document.getElementById('page-number-field');
+    const nextPageButton = document.getElementById('next-page-button');
+    const prevPageButton = document.getElementById('prev-page-button');
+
+    // Note the use of string to int coertion here. 
+    // It is pretty helpful because more strict than parseInt (which would for example parse "4abcd" as 4),
+    // but still accepts whitespaces: " 4" == 4 is true
+    if (input.value != viewerState.leftPageNumber && input.value != viewerState.rightPageNumber) {
+        input.value = viewerState.leftPageNumber;
+    }
+    nextPageButton.disabled = pagePairIndex === lastPairIndex
+    prevPageButton.disabled = pagePairIndex === 0;
 }

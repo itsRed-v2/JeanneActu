@@ -12,10 +12,24 @@
 </head>
 <body>
 	<div class="toolbar">
-		<a class="toolbar__logo-link" href="/" title="Retourner à la page d'accueil">
-			<img src="/public/logos/long/grey.svg" alt="Logo Jeanne actu">
-		</a>
-		<div class="toolbar__left">
+		<div id="toolbar__right" class="toolbar__right">
+			<a class="toolbar__logo-link" href="/" title="Retourner à la page d'accueil">
+				<img src="/public/logos/long/grey.svg" alt="Logo Jeanne actu">
+			</a>
+		</div>
+		<div class="toolbar__center">
+			<button id="prev-page-button" class="toolbar__prev-page-button toolbar__button">
+				<img src="/public/images/toolbar/arrow.png">
+			</button>
+			<span>Page</span>
+			<input id="page-number-field" class="toolbar__page-number-field" type="text">
+			<span>/</span>
+			<span id="page-count-inicator">?</span>
+			<button id="next-page-button" class="toolbar__next-page-button toolbar__button">
+				<img src="/public/images/toolbar/arrow.png">
+			</button>
+		</div>
+		<div id="toolbar__left" class="toolbar__left">
 			<div class="toolbar__zoom-area">
 				<span id="toolbar__zoom-value" class="toolbar__zoom-value">100%</span>
 				<button id="zoom-in-button" class="toolbar__button" title="Plus grand">
@@ -35,8 +49,8 @@
 	</div>
 	<div id="view-area" class="view-area">
 		<div id="page-container" class="page-container">
-			<canvas id="left-page"></canvas>
-			<canvas id="right-page"></canvas>
+			<canvas id="left-page" class="page"></canvas>
+			<canvas id="right-page" class="page"></canvas>
 		</div>
 	</div>
 </body>
