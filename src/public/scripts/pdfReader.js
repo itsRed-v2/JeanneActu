@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async event => {
     zoomPercent = 100;
 
     // Initial canvas draw.
-    draw();
+    queueDraw();
 
     // Initializing toolbar
     initPageSelector();
@@ -74,18 +74,48 @@ function scheduleDraw() {
 
     drawScheduleId = setTimeout(() => {
         drawScheduleId = undefined;
-        draw();
+        queueDraw();
     }, 500);
 }
 
-function draw() {
-    drawPage(pdf, viewerState.leftPageNumber, 'left-page');
+function queueDraw() {
+    queueDrawPage(pdf, viewerState.leftPageNumber, 'left-page');
 
     if (viewerState.showRightPage) {
-        drawPage(pdf, viewerState.rightPageNumber, 'right-page');
+        queueDrawPage(pdf, viewerState.rightPageNumber, 'right-page');
         document.getElementById('right-page').style.display = "";
     } else {
         document.getElementById('right-page').style.display = "none";
+    }
+}
+
+let drawingJobs = {};
+
+async function queueDrawPage(pdf, pageNumber, canvasId) {
+    let job = drawingJobs[canvasId];
+
+    // If uninitialized, initialize
+    if (!job) {
+        job = drawingJobs[canvasId] = {
+            isDrawing: false,
+            pendingDraw: undefined,
+        };
+    }
+
+    job.pendingDraw = { pdf, pageNumber };
+
+    // If not already doing so, draw until there is no pending tasks.
+    if (!job.isDrawing) {
+        job.isDrawing = true;
+
+        while (job.pendingDraw) {
+            let pendingPdf = job.pendingDraw.pdf;
+            let pendingPageNumber = job.pendingDraw.pageNumber;
+            job.pendingDraw = undefined;
+            await drawPage(pendingPdf, pendingPageNumber, canvasId);
+        }
+
+        job.isDrawing = false;
     }
 }
 
@@ -110,7 +140,9 @@ async function drawPage(pdf, pageNumber, canvasId) {
         transform: transform,
         viewport: viewport
     };
-    page.render(renderContext);
+
+    const renderTask = page.render(renderContext);
+    await renderTask.promise; // Wait for the task to complete before returning.
 }
 
 function getScaledViewport(page) {
@@ -202,7 +234,7 @@ function onNextPage() { // Fired when the "next page" button is pressed
     pagePairIndex++;
     calculatePageNumbers();
     updatePageSelector();
-    draw();
+    queueDraw();
 }
 
 function onPrevPage() { // Fired when the "previous page" button is pressed
@@ -211,7 +243,7 @@ function onPrevPage() { // Fired when the "previous page" button is pressed
     pagePairIndex--;
     calculatePageNumbers();
     updatePageSelector();
-    draw();
+    queueDraw();
 }
 
 function onInputChange() {
@@ -224,7 +256,7 @@ function onInputChange() {
     
     calculatePageNumbers();
     updatePageSelector();
-    draw();
+    queueDraw();
 }
 
 function onInputFocus() {
