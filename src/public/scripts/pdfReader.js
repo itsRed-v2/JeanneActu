@@ -52,14 +52,15 @@ document.addEventListener("DOMContentLoaded", async event => {
 // ### PDF RENDERING / CANVAS MANIPULATION ###
 
 function resizeAllCanvases() {
-    updateCanvasSize(pdf, viewerState.leftPageNumber, 'left-page');
+    const maxSize = getCanvasMaxSize();
+    updateCanvasSize(pdf, viewerState.leftPageNumber, 'left-page', maxSize);
     if (viewerState.showRightPage)
-        updateCanvasSize(pdf, viewerState.rightPageNumber, 'right-page');
+        updateCanvasSize(pdf, viewerState.rightPageNumber, 'right-page', maxSize);
 }
 
-async function updateCanvasSize(pdf, pageNumber, canvasId) {
+async function updateCanvasSize(pdf, pageNumber, canvasId, maxSize) {
     let page = await pdf.getPage(pageNumber)
-    let viewport = getScaledViewport(page);
+    let viewport = getScaledViewport(page, maxSize);
     let canvas = document.getElementById(canvasId);
 
     canvas.style.width = Math.floor(viewport.width - 1) + "px";
@@ -120,13 +121,14 @@ async function queueDrawPage(pdf, pageNumber, canvasId) {
 }
 
 async function drawPage(pdf, pageNumber, canvasId) {
-    updateCanvasSize(pdf, pageNumber, canvasId);
+    const maxSize = getCanvasMaxSize();
+    updateCanvasSize(pdf, pageNumber, canvasId, maxSize);
 
     // Support HiDPI-screens.
     let resolutionFactor = window.devicePixelRatio || 1;
 
     let page = await pdf.getPage(pageNumber);
-    let viewport = getScaledViewport(page);
+    let viewport = getScaledViewport(page, maxSize);
     let canvas = document.getElementById(canvasId);
 
     canvas.width = Math.floor(viewport.width * resolutionFactor);
@@ -145,8 +147,7 @@ async function drawPage(pdf, pageNumber, canvasId) {
     await renderTask.promise; // Wait for the task to complete before returning.
 }
 
-function getScaledViewport(page) {
-    const maxSize = getCanvasMaxSize();
+function getScaledViewport(page, maxSize) {
     let viewport = page.getViewport({ scale: 1, });
     let scaleX = maxSize.width / viewport.width;
     let scaleY = maxSize.height / viewport.height;
