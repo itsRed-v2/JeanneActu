@@ -1,12 +1,16 @@
 <div class="card">
     <div class="card__top">
-        <a href="<%= documentUrl %>" target="_blank">
+        <a href="<%= documentUrl %>" 
+                <% if (type === 'video') { %> target="_blank" <% } %> 
+        >
             <img src="<%= thumbnailUrl %>">
         </a>
     </div>
     
     <div class="card__bottom">
-        <a href="<%= documentUrl %>" target="_blank" class="card__bottom__title">
+        <a href="<%= documentUrl %>" class="card__bottom__title" 
+                <% if (type === 'video') { %> target="_blank" <% } %> 
+        >
             <h2><%= title %></h2>
         </a>
         <div class="numero-info-row">
@@ -28,15 +32,17 @@
                 <span class="js-like-counter" id="js-like-counter-id-<%= id %>">--</span>
             </button>
             <div class="card-spacer"></div>
-            <a href="<%= documentUrl %>" target="_blank" class="card-button">
-                <% if (type === 'numero') { %>
+            <% if (type === 'numero') { %>
+                <a href="<%= documentUrl %>" class="card-button">
                     <img src="/public/images/oeil.png">
                     <span>Afficher</span>
-                <% } else { %>
+                </a>
+            <% } else { %>
+                <a href="<%= documentUrl %>" target="_blank" class="card-button">
                     <img src="/public/images/jouer.png">
                     <span>Visionner</span>
-                <% } %>
-            </a>
+                </a>
+            <% } %>
         </div>
     </div>
 </div>
