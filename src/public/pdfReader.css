@@ -94,6 +94,7 @@ canvas {
 
 .toolbar__button:hover:not(:disabled) {
     background-color: #EDEDED;
+    cursor: pointer;
 }
 
 .toolbar__button:disabled {
