@@ -11,43 +11,47 @@ let pdf;
 let viewerState;
 let zoomPercent;
 
-document.addEventListener("DOMContentLoaded", async event => {
-    // Centering the page selector (do it before loading pdf, or it would stay off center until pdf fully loaded)
-    balanceToolbar();
-
-    // Loading PDF (This must be done very early as nearly all others functions rely on the pdf global variable)
-    console.log("Loading:", PDF_URL);
-    pdf = await pdfjsLib.getDocument(PDF_URL).promise
-    console.log("Pdf successfully loaded.");
-
-    // Global variable initialization
-    viewerState = {
-        leftPageNumber: 1,
-        rightPageNumber: -1,
-        showRightPage: false
-    };
-    zoomPercent = 100;
-
-    // Initial canvas draw.
-    queueDraw();
-
-    // Initializing toolbar
-    initPageSelector();
-
-    // Event registering
-    window.addEventListener('resize', () => {
-        resizeAllCanvases();
-        scheduleDraw();
+if (isMobile()) { // If on mobile, just redirect to the pdf file url, and use the browsers' native pdf viewer.
+    document.location.href = PDF_URL;
+} else {
+    document.addEventListener("DOMContentLoaded", async event => {
+        // Centering the page selector (do it before loading pdf, or it would stay off center until pdf fully loaded)
+        balanceToolbar();
+    
+        // Loading PDF (This must be done very early as nearly all others functions rely on the pdf global variable)
+        console.log("Loading:", PDF_URL);
+        pdf = await pdfjsLib.getDocument(PDF_URL).promise
+        console.log("Pdf successfully loaded.");
+    
+        // Global variable initialization
+        viewerState = {
+            leftPageNumber: 1,
+            rightPageNumber: -1,
+            showRightPage: false
+        };
+        zoomPercent = 100;
+    
+        // Initial canvas draw.
+        queueDraw();
+    
+        // Initializing toolbar
+        initPageSelector();
+    
+        // Event registering
+        window.addEventListener('resize', () => {
+            resizeAllCanvases();
+            scheduleDraw();
+        });
+    
+        document.getElementById("zoom-in-button").addEventListener('click', onZoomIn);
+        document.getElementById("zoom-out-button").addEventListener('click', onZoomOut);
+        document.getElementById("zoom-reset-button").addEventListener('click', onZoomReset);
+        document.getElementById("next-page-button").addEventListener('click', onNextPage);
+        document.getElementById("prev-page-button").addEventListener('click', onPrevPage);
+        document.getElementById("page-number-field").addEventListener('change', onInputChange);
+        document.getElementById("page-number-field").addEventListener('focus', onInputFocus);
     });
-
-    document.getElementById("zoom-in-button").addEventListener('click', onZoomIn);
-    document.getElementById("zoom-out-button").addEventListener('click', onZoomOut);
-    document.getElementById("zoom-reset-button").addEventListener('click', onZoomReset);
-    document.getElementById("next-page-button").addEventListener('click', onNextPage);
-    document.getElementById("prev-page-button").addEventListener('click', onPrevPage);
-    document.getElementById("page-number-field").addEventListener('change', onInputChange);
-    document.getElementById("page-number-field").addEventListener('focus', onInputFocus);
-});
+}
 
 // ### PDF RENDERING / CANVAS MANIPULATION ###
 
@@ -289,4 +293,11 @@ function updatePageSelector() {
     }
     nextPageButton.disabled = pagePairIndex === lastPairIndex
     prevPageButton.disabled = pagePairIndex === 0;
+}
+
+// Mobile detection
+
+function isMobile() {
+    const minWidth = 768; // Minimum width for desktop devices
+    return window.innerWidth < minWidth || screen.width < minWidth;
 }
