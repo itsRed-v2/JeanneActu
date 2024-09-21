@@ -48,6 +48,10 @@ function hideDislikeOnTouchScreenDevices() {
 	for (let container of dislikeContainers) {
 		container.style.display = 'none';
 	}
+	const likeButtons = document.getElementsByClassName('like-button');
+	for (let button of likeButtons) {
+		button.classList.add('single');
+	}
 }
 
 document.addEventListener("DOMContentLoaded", () => {

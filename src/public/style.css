@@ -7,9 +7,9 @@
 	--grey: #ededed;
 	--dark: #122D40;
 
-	--gradient-opacity: 0.6;
 	--gradient: linear-gradient(135deg, #04F, #0CF);
-	--gradient-transparent: linear-gradient(135deg, rgba(0, 68, 255, var(--gradient-opacity)), rgba(0, 204, 255, var(--gradient-opacity)));
+	--button-primary: #87b6ff;
+	--button-secondary: #e2e2e2;
 }
 
 body {
@@ -167,7 +167,7 @@ main {
 	display: flex;
 	align-items: end;
 	flex-wrap: wrap;
-	gap: 5px;
+	gap: 2px;
 }
 
 .card-button, .card-button--no-darken {
@@ -180,7 +180,7 @@ main {
 
 	border: none;
 	border-radius: 10px;
-	background: var(--gradient-transparent);
+	background: var(--button-primary);
 	transition: 0.2s;
 
 	text-decoration: none;
@@ -193,11 +193,25 @@ main {
 }
 
 .card-button:hover {
-	filter: brightness(0.8);
+	filter: brightness(0.9);
 }
 
 .card-button:active {
-	filter: brightness(0.6);
+	filter: brightness(0.7);
+}
+
+.like-button {
+	border-radius: 3px 10px 10px 3px;
+	background: var(--button-secondary);
+}
+
+.like-button.single {
+	border-radius: 10px 10px 10px 10px;
+}
+
+.dislike-button {
+	border-radius: 10px 3px 3px 10px;
+	background: var(--button-secondary);
 }
 
 .card-spacer {
@@ -210,7 +224,7 @@ main {
 	cursor: inherit;
 }
 
-.dislike > img {
+.dislike-button > img {
 	transform: rotate(180deg);
 }
 
@@ -224,6 +238,6 @@ main {
 	inset: -2px;
 }
 
-.dislike-container__hover-zone:hover ~ .dislike {
+.dislike-container__hover-zone:hover ~ .dislike-button {
 	transform: translateY(120%);
 }

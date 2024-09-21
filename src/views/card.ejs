@@ -23,11 +23,11 @@
         <div class="card-buttons-row">
             <div class="dislike-container">
                 <div class="dislike-container__hover-zone"></div>
-                <button class="card-button--no-darken dislike">
+                <button class="card-button--no-darken dislike-button">
                     <img src="/public/images/like.svg">
                 </button>
             </div>
-            <button class="card-button" onclick="sendLike('<%= id %>')">
+            <button class="card-button like-button" onclick="sendLike('<%= id %>')">
                 <img src="/public/images/like.svg">
                 <span class="js-like-counter" id="js-like-counter-id-<%= id %>">--</span>
             </button>
