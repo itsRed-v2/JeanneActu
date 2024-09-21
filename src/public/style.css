@@ -10,6 +10,8 @@
 	--gradient: linear-gradient(135deg, #04F, #0CF);
 	--button-primary: #87b6ff;
 	--button-secondary: #e2e2e2;
+
+    --focus-color: rgb(66, 117, 228);
 }
 
 body {
@@ -181,10 +183,14 @@ main {
 	border: none;
 	border-radius: 10px;
 	background: var(--button-primary);
-	transition: 0.2s;
+	transition: filter 0.2s, transform 0.2s;
 
 	text-decoration: none;
 	color: black;
+}
+
+.card-button:focus-visible, .card-button--no-darken:focus-visible {
+	outline: 2px solid var(--focus-color);
 }
 
 .card-button img, .card-button--no-darken img {
