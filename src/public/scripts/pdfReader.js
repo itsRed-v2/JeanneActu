@@ -1,7 +1,7 @@
 // Initialization of pdfjsLib
-import "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
+import "/public/scripts/pdf.js/pdf-legacy.min.mjs";
 const pdfjsLib = globalThis.pdfjsLib;
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+pdfjsLib.GlobalWorkerOptions.workerSrc = "/public/scripts/pdf.js/pdf-legacy.worker.min.mjs";
 
 // Constant declaration 
 const PDF_URL = globalThis.pdfUrl; // This value is passed through by EJS with a script tag
